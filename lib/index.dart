@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_tips/home.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -10,39 +11,55 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
+      backgroundColor: Color(0xFF024424),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/black_logo.png', // Substitua pelo caminho da imagem do seu logo
+              'assets/white_logo.png',
               height: 300.0,
             ),
             SizedBox(height: 10.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'CPF',
+                labelStyle: TextStyle(
+                  color: Colors.black45, // Defina a cor desejada aqui
+                ),
+                filled: true,
+                fillColor: Colors.white,
               ),
             ),
             SizedBox(height: 16.0),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Senha',
+                labelStyle: TextStyle(
+                  color: Colors.black45, // Defina a cor desejada aqui
+                ),
+                filled: true,
+                fillColor: Colors.white,
               ),
               obscureText: true,
             ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Implementar a lógica de login aqui
-              },
-              child: Text('Login'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
+            SizedBox(height: 16.0,),
+            SizedBox(
+              height: 50.0,
+              width: 200.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Implementar a lógica de login aqui
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                },
+                child: Text('Login'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
+                ),
               ),
             ),
           ],
