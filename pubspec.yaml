@@ -71,10 +71,6 @@ flutter:
     - assets/icons/icn_star.png
     - assets/icons/icn_vegetable.png
     - assets/icons/icn_back.png
-    - assets/icons/icn_man_active.png
-    - assets/icons/icn_man_desactive.png
-    - assets/icons/icn_woman_active.png
-    - assets/icons/icn_woman_desactive.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
