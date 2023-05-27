@@ -64,6 +64,13 @@ flutter:
     - assets/icons/icn_recommendation.png
     - assets/icons/icn_food.png
     - assets/icons/icn_user.png
+    - assets/icons/icn_carbohydrate.png
+    - assets/icons/icn_dairy.png
+    - assets/icons/icn_fruit.png
+    - assets/icons/icn_protein.png
+    - assets/icons/icn_star.png
+    - assets/icons/icn_vegetable.png
+    - assets/icons/icn_back.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

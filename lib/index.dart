@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_tips/home.dart';
+import 'package:food_tips/register.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -56,7 +57,12 @@ class LoginScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => Home()),
                   );
                 },
-                child: Text('Login'),
+                child: Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
                 ),
@@ -75,7 +81,10 @@ class LoginScreen extends StatelessWidget {
               SizedBox(width: 4.0),
               TextButton(
                 onPressed: () {
-                  // Implementar a navegação para a tela de cadastro aqui
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Register()),
+                  );
                 },
                 child: Text('Cadastre-se'),
               ),

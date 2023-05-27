@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_tips/foodCategory.dart';
+import 'package:food_tips/register.dart';
 
 void main() {
   runApp(Home());
@@ -35,7 +37,11 @@ class Home extends StatelessWidget {
                           SizedBox(width: 16.0),
                           Text(
                               'Dados Biométricos',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF504848),
+                              ),
                           ),
                         ],
                       ),
@@ -54,6 +60,10 @@ class Home extends StatelessWidget {
                 ),
                 onPressed: () {
                   // Ação do botão Alimentos
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FoodCategory()),
+                  );
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -112,7 +122,10 @@ class Home extends StatelessWidget {
                   onPrimary: Color(0xFF504848), // Define a cor do texto
                 ),
                 onPressed: () {
-                  // Ação do botão Recomendações
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Register()),
+                  );
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
