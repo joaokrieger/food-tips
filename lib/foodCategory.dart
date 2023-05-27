@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_tips/foodList.dart';
 import 'package:food_tips/home.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class FoodCategory extends StatelessWidget {
       backgroundColor: Color(0xFF024424),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 20.0),
             Padding(
@@ -43,7 +44,10 @@ class FoodCategory extends StatelessWidget {
                         onPrimary: Color(0xFF504848), // Define a cor do texto
                       ),
                       onPressed: () {
-                        // Ação do botão Recomendações
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FoodList()),
+                        );
                       },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,

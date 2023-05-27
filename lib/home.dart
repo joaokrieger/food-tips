@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_tips/biometricInfo.dart';
 import 'package:food_tips/foodCategory.dart';
+import 'package:food_tips/recommendationCategory.dart';
 import 'package:food_tips/register.dart';
 
 void main() {
@@ -290,7 +291,10 @@ class Home extends StatelessWidget {
                   onPrimary: Color(0xFF504848), // Define a cor do texto
                 ),
                 onPressed: () {
-                  // Ação do botão Recomendações
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecommendationCategory()),
+                  );
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
