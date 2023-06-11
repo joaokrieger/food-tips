@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:food_tips/home.dart';
 import 'package:food_tips/register.dart';
+import 'package:http/http.dart' as http;
+
+import 'apiService.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -8,95 +13,147 @@ void main() {
   ));
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    final url = 'http://10.0.2.2:8000/auth/';
+    print(_usernameController.text);
+    print(_passwordController.text);
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        String token = json.decode(response.body)['token'];
+        ApiService().setApiKey(token);
+
+        // Navigate to the Home screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      } else if (response.statusCode == 401) {
+        // Unauthorized: Invalid credentials
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Credenciais inválidas'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // Handle other response statuses as needed
+        print('Login failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Login failed with exception: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
-        backgroundColor: Color(0xFF024424),
-
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 100.0),
-                Image.asset(
-                  'assets/white_logo.png',
-                  height: 300.0,
-                ),
-                SizedBox(height: 10.0),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'CPF',
-                    labelStyle: TextStyle(
-                      color: Colors.black45, // Defina a cor desejada aqui
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
+    return Scaffold(
+      backgroundColor: const Color(0xFF024424),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 100.0),
+              Image.asset(
+                'assets/white_logo.png',
+                height: 300.0,
+              ),
+              const SizedBox(height: 10.0),
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  labelText: 'username',
+                  labelStyle: TextStyle(
+                    color: Colors.black45,
                   ),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                SizedBox(height: 16.0),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Senha',
-                    labelStyle: TextStyle(
-                      color: Colors.black45, // Defina a cor desejada aqui
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Senha',
+                  labelStyle: TextStyle(
+                    color: Colors.black45,
                   ),
-                  obscureText: true,
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                SizedBox(height: 16.0,),
-                SizedBox(
-                  height: 50.0,
-                  width: 200.0,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Implementar a lógica de login aqui
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Home()),
-                      );
-                    },
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
+                obscureText: true,
+              ),
+              const SizedBox(height: 16.0),
+              SizedBox(
+                height: 50.0,
+                width: 200.0,
+                child: ElevatedButton(
+                  onPressed: _login,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF008445)),
+                  ), // Call the login method when the button is pressed
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Container(
-            height: 50.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Não tem uma conta?"),
-                SizedBox(width: 4.0),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Register()),
-                    );
-                  },
-                  child: Text('Cadastre-se'),
-                ),
-              ],
-            ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 50.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Não tem uma conta?"),
+              const SizedBox(width: 4.0),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Register()),
+                  );
+                },
+                child: const Text('Cadastre-se'),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
