@@ -60,20 +60,20 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/black_logo.png
-    - assets/white_logo.png
-    - assets/icons/icn_recommendation.png
-    - assets/icons/icn_food.png
-    - assets/icons/icn_user.png
-    - assets/icons/icn_carbohydrate.png
-    - assets/icons/icn_dairy.png
-    - assets/icons/icn_fruit.png
-    - assets/icons/icn_protein.png
-    - assets/icons/icn_star.png
-    - assets/icons/icn_vegetable.png
-    - assets/icons/icn_back.png
-    - assets/icons/icn_muscle.png
-    - assets/icons/icn_slimming.png
+    - assets/img/black_logo.png
+    - assets/img/white_logo.png
+    - assets/img/icons/icn_recommendation.png
+    - assets/img/icons/icn_food.png
+    - assets/img/icons/icn_user.png
+    - assets/img/icons/icn_carbohydrate.png
+    - assets/img/icons/icn_dairy.png
+    - assets/img/icons/icn_fruit.png
+    - assets/img/icons/icn_protein.png
+    - assets/img/icons/icn_star.png
+    - assets/img/icons/icn_vegetable.png
+    - assets/img/icons/icn_back.png
+    - assets/img/icons/icn_muscle.png
+    - assets/img/icons/icn_slimming.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/foodList.dart';
-import 'package:food_tips/home.dart';
+import 'package:food_tips/src/views/foodList.dart';
 
 void main() {
   runApp(FoodRegister());
@@ -14,7 +13,7 @@ class FoodRegister extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset('assets/icons/icn_back.png'),
+          icon: Image.asset('assets/img/icons/icn_back.png'),
           onPressed: () {
             // Ação ao clicar no ícone
             Navigator.push(

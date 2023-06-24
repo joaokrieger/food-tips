@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/src/biometricInfo.dart';
-import 'package:food_tips/foodCategory.dart';
-import 'package:food_tips/recommendationCategory.dart';
-import 'package:food_tips/register.dart';
+import 'package:food_tips/src/views/biometricInfo.dart';
+import 'package:food_tips/src/views/foodCategory.dart';
+import 'package:food_tips/src/views/recommendationCategory.dart';
+import 'package:food_tips/src/views/register.dart';
 
 void main() {
   runApp(Home());
@@ -26,7 +26,7 @@ class Home extends StatelessWidget {
               GestureDetector(
                 child: Container(
                   width: 350,
-                  height: 500,
+                  height: 300,
                   decoration: BoxDecoration(
                     color: Color(0xFFF0F0F0),
                     borderRadius: BorderRadius.circular(10), // Define o raio das bordas
@@ -145,96 +145,6 @@ class Home extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10.0),
-                          Row(
-                            children: [
-                              SizedBox(width: 16.0),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Color(0xFF024424),
-                                      height: 80,
-                                      width: 80,// Defina a altura desejada para a caixa
-                                    ),
-                                    // Outros widgets dentro da coluna
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Color(0xFF024424),
-                                      height: 80,
-                                      width: 80,// Defina a altura desejada para a caixa
-                                    ),
-                                    // Outros widgets dentro da coluna
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Color(0xFF024424),
-                                      height: 80,
-                                      width: 80,// Defina a altura desejada para a caixa
-                                    ),
-                                    // Outros widgets dentro da coluna
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.0),
-                          Row(
-                            children: [
-                              SizedBox(width: 16.0),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Color(0xFF024424),
-                                      height: 80,
-                                      width: 80,// Defina a altura desejada para a caixa
-                                    ),
-                                    // Outros widgets dentro da coluna
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Color(0xFF024424),
-                                      height: 80,
-                                      width: 80,// Defina a altura desejada para a caixa
-                                    ),
-                                    // Outros widgets dentro da coluna
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      color: Color(0xFF024424),
-                                      height: 80,
-                                      width: 80,// Defina a altura desejada para a caixa
-                                    ),
-                                    // Outros widgets dentro da coluna
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
                         ]
                     )
                   ),
@@ -268,7 +178,7 @@ class Home extends StatelessWidget {
                       children:[
                         SizedBox(width: 5),
                         Image.asset(
-                          'assets/icons/icn_food.png',
+                          'assets/img/icons/icn_food.png',
                           width: 40,
                           height: 40,
                         ),
@@ -300,7 +210,7 @@ class Home extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children:[
                       Image.asset(
-                        'assets/icons/icn_recommendation.png',
+                        'assets/img/icons/icn_recommendation.png',
                         width: 50,
                         height: 50,
                       ),
@@ -333,7 +243,7 @@ class Home extends StatelessWidget {
                       children:[
                         SizedBox(width: 10),
                         Image.asset(
-                          'assets/icons/icn_user.png',
+                          'assets/img/icons/icn_user.png',
                           width: 35,
                           height: 35,
                         ),

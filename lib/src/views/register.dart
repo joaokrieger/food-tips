@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/home.dart';
+import 'package:food_tips/src/views/home.dart';
 
 void main() {
   runApp(Register());

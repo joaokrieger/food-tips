@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/src/foodList.dart';
-import 'package:food_tips/src/home.dart';
+import 'package:food_tips/src/views/foodList.dart';
+import 'package:food_tips/src/views/home.dart';
 
 void main() {
   runApp(FoodCategory());
@@ -14,7 +14,7 @@ class FoodCategory extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset('assets/icons/icn_back.png'),
+          icon: Image.asset('assets/img/icons/icn_back.png'),
           onPressed: () {
             // Ação ao clicar no ícone
             Navigator.push(
@@ -53,7 +53,7 @@ class FoodCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_star.png',
+                              'assets/img/icons/icn_star.png',
                               width: 50,
                               height: 50,
                             ),
@@ -82,7 +82,7 @@ class FoodCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_carbohydrate.png',
+                              'assets/img/icons/icn_carbohydrate.png',
                               width: 50,
                               height: 50,
                             ),
@@ -111,7 +111,7 @@ class FoodCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_dairy.png',
+                              'assets/img/icons/icn_dairy.png',
                               width: 50,
                               height: 50,
                             ),
@@ -140,7 +140,7 @@ class FoodCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_protein.png',
+                              'assets/img/icons/icn_protein.png',
                               width: 50,
                               height: 50,
                             ),
@@ -169,7 +169,7 @@ class FoodCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_vegetable.png',
+                              'assets/img/icons/icn_vegetable.png',
                               width: 50,
                               height: 50,
                             ),
@@ -198,7 +198,7 @@ class FoodCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_fruit.png',
+                              'assets/img/icons/icn_fruit.png',
                               width: 50,
                               height: 50,
                             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/home.dart';
+import 'package:food_tips/src/views/home.dart';
 
 void main() {
   runApp(RecommendationCategory());
@@ -13,7 +13,7 @@ class RecommendationCategory extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset('assets/icons/icn_back.png'),
+          icon: Image.asset('assets/img/icons/icn_back.png'),
           onPressed: () {
             // Ação ao clicar no ícone
             Navigator.push(
@@ -49,7 +49,7 @@ class RecommendationCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_slimming.png',
+                              'assets/img/icons/icn_slimming.png',
                               width: 50,
                               height: 50,
                             ),
@@ -78,7 +78,7 @@ class RecommendationCategory extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children:[
                             Image.asset(
-                              'assets/icons/icn_muscle.png',
+                              'assets/img/icons/icn_muscle.png',
                               width: 50,
                               height: 50,
                             ),

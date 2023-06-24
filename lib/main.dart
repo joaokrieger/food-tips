@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:food_tips/home.dart';
-import 'package:food_tips/register.dart';
+import 'package:food_tips/src/views/home.dart';
+import 'package:food_tips/src/views/register.dart';
 import 'package:http/http.dart' as http;
 
-import 'apiService.dart';
+import 'src/services/apiService.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 100.0),
               Image.asset(
-                'assets/white_logo.png',
+                'assets/img/white_logo.png',
                 height: 300.0,
               ),
               const SizedBox(height: 10.0),
