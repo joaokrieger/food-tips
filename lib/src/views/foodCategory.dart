@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/foodList.dart';
-import 'package:food_tips/home.dart';
+import 'package:food_tips/src/foodList.dart';
+import 'package:food_tips/src/home.dart';
 
 void main() {
   runApp(FoodCategory());

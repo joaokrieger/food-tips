@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/biometricInfo.dart';
+import 'package:food_tips/src/biometricInfo.dart';
 import 'package:food_tips/foodCategory.dart';
 import 'package:food_tips/recommendationCategory.dart';
 import 'package:food_tips/register.dart';
