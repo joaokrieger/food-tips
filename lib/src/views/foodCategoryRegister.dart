@@ -30,12 +30,11 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
 
   Future<void> _foodCategoryRegister () async {
 
-    final url = 'http://10.0.2.2:8000/api/v1/foodtype/';
-
     if (idFoodCategory > 0) {
 
+      final url = 'http://10.0.2.2:8000/api/v1/foodtype/${idFoodCategory}/';
+
       final body = json.encode({
-        'id': idFoodCategory,
         'description': _descriptionController.text,
       });
 
@@ -62,6 +61,8 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
       }
     }
     else {
+
+      final url = 'http://10.0.2.2:8000/api/v1/foodtype/';
 
       final body = json.encode({
         'description': _descriptionController.text,
