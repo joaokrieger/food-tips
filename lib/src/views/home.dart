@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_tips/src/views/biometricInfo.dart';
 import 'package:food_tips/src/views/foodCategory.dart';
+import 'package:food_tips/src/views/foodCategoryList.dart';
 import 'package:food_tips/src/views/recommendationCategory.dart';
 import 'package:food_tips/src/views/register.dart';
 
@@ -170,7 +171,7 @@ class Home extends StatelessWidget {
                     // Ação do botão Alimentos
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FoodCategory()),
+                      MaterialPageRoute(builder: (context) => FoodCategoryList()),
                     );
                   },
                   child: Row(

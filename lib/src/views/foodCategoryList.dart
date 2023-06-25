@@ -1,23 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:food_tips/src/models/foodCategory.dart';
+import 'package:food_tips/src/views/foodCategoryRegister.dart';
+import 'package:food_tips/src/views/foodRegister.dart';
+import 'package:food_tips/src/views/home.dart';
+import '../services/apiService.dart';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:food_tips/src/views/foodCategory.dart';
-import 'package:food_tips/src/views/foodRegister.dart';
-
-import '../models/food.dart';
-import '../services/apiService.dart';
-
 void main() {
-  runApp(FoodList());
+  runApp(FoodCategoryList());
 }
 
-class FoodList extends StatefulWidget {
+class FoodCategoryList extends StatefulWidget {
   @override
-  _FoodListState createState() => _FoodListState();
+  _FoodCategoryListState createState() => _FoodCategoryListState();
 }
 
-class _FoodListState extends State<FoodList> {
-  late List<Food> foodList = []; // Adicionado o operador 'late' para inicialização tardia
+class _FoodCategoryListState extends State<FoodCategoryList> {
+  late List<FoodCategory> foodCategoryList = []; // Adicionado o operador 'late' para inicialização tardia
   int currentPage = 1;
   late TextEditingController searchController = TextEditingController();
   late String searchQuery = '';
@@ -29,25 +28,16 @@ class _FoodListState extends State<FoodList> {
   }
 
   Future<void> fetchData() async {
-    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery');
+
+    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/foodtype/?page=$currentPage&search=$searchQuery');
 
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       dynamic jsonData = jsonDecode(responseBody);
       final results = jsonData['results'] as List<dynamic>;
-      foodList = results.map((result) => Food(
+      foodCategoryList = results.map((result) => FoodCategory(
         id: result['id'],
         description: result['description'],
-        calories: result['calories'],
-        servingSize: result['serving_size'],
-        totalFat: result['total_fat'],
-        saturatedFat: result['saturated_fat'],
-        cholesterol: result['cholesterol'],
-        sodium: result['sodium'],
-        carbohydrate: result['carbohydrate'],
-        proteins: result['proteins'],
-        snackType: result['snack_type'],
-        foodType: result['food_type'],
       )).toList();
     } else {
       // Handle the error
@@ -68,7 +58,6 @@ class _FoodListState extends State<FoodList> {
     fetchData();
   }
 
-
   @override
   void dispose() {
     searchController.dispose();
@@ -85,7 +74,7 @@ class _FoodListState extends State<FoodList> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => FoodCategory()),
+              MaterialPageRoute(builder: (context) => Home()),
             );
           },
         ),
@@ -133,11 +122,11 @@ class _FoodListState extends State<FoodList> {
             ),
           ),
           Expanded(
-            child: foodList != null
+            child: foodCategoryList != null
                 ? ListView.builder(
-              itemCount: foodList.length,
+              itemCount: foodCategoryList.length,
               itemBuilder: (context, index) {
-                final food = foodList[index];
+                final foodCategory = foodCategoryList[index];
                 return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -145,46 +134,13 @@ class _FoodListState extends State<FoodList> {
                       children: [
                         ListTile(
                           title: Text(
-                            '${food.description} - ${food.servingSize}',
+                            '${foodCategory.description}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        ListTile(
-                          leading: Icon(Icons.assessment),
-                          title: Text('Calorias: ${food.calories}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_dining),
-                          title: Text('Tamanho da Porção: ${food.servingSize}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.restaurant),
-                          title: Text('Gordura Total: ${food.totalFat}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_drink),
-                          title: Text('Gordura Saturada: ${food.saturatedFat}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.grade),
-                          title: Text('Colesterol: ${food.cholesterol}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_cafe),
-                          title: Text('Sódio: ${food.sodium}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.bakery_dining),
-                          title: Text('Carboidrato: ${food.carbohydrate}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.fitness_center),
-                          title: Text('Proteínas: ${food.proteins}'),
                         ),
                       ],
                     ),
@@ -202,7 +158,7 @@ class _FoodListState extends State<FoodList> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FoodRegisterScreen()),
+            MaterialPageRoute(builder: (context) => FoodCategoryRegisterScreen()),
           );
         },
         child: Icon(
@@ -213,5 +169,4 @@ class _FoodListState extends State<FoodList> {
       ),
     );
   }
-
 }
