@@ -145,7 +145,7 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
                   children: [
                     TextField(
                       controller: _descriptionController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Descrição',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -160,14 +160,14 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
                       width: 300.0,
                       child: ElevatedButton(
                         onPressed: _foodCategoryRegister,
-                        child: Text(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
+                        ),
+                        child: const Text(
                           'Salvar',
                           style: TextStyle(
                             fontSize: 20,
                           ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
                         ),
                       ),
                     ),

@@ -11,6 +11,7 @@ class Food {
   final String proteins;
   final int snackType;
   final int foodType;
+  bool is_stared;
 
   Food({
     required this.id,
@@ -25,5 +26,6 @@ class Food {
     required this.proteins,
     required this.snackType,
     required this.foodType,
+    required this.is_stared
   });
 }

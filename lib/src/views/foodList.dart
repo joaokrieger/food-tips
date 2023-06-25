@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import '../models/food.dart';
 import '../services/apiService.dart';
 import 'foodCategory.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:food_tips/src/views/foodRegister.dart';
-
 import 'foodDetail.dart';
+import 'foodRegister.dart';
 
 void main() {
   runApp(FoodList());
@@ -25,6 +24,7 @@ class _FoodListState extends State<FoodList> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = '';
   String pageSize = '30';
+  ApiService apiService = ApiService();
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _FoodListState extends State<FoodList> {
   }
 
   Future<void> fetchData() async {
-    final response = await ApiService().getRequest(
+    final response = await apiService.getRequest(
         'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
 
     if (response.statusCode == 200) {
@@ -54,6 +54,7 @@ class _FoodListState extends State<FoodList> {
         proteins: result['proteins'],
         snackType: result['snack_type'],
         foodType: result['food_type'],
+        is_stared: result['is_stared'],
       ))
           .toList();
       foodList.addAll(newFoodList);
@@ -63,6 +64,27 @@ class _FoodListState extends State<FoodList> {
     }
 
     setState(() {});
+  }
+
+  Future<void> toggleStarStatus(int foodId, bool currentStarStatus) async {
+    final url = 'http://10.0.2.2:8000/api/v1/food/star/';
+    final body = {
+      'food_id': foodId.toString(),
+    };
+    final response = await apiService.postRequest(url, json.encode(body));
+
+    if (response.statusCode == 200) {
+      // Success, update the star status locally
+      setState(() {
+        final foodIndex =
+        foodList.indexWhere((food) => food.id == foodId);
+        if (foodIndex != -1) {
+          foodList[foodIndex].is_stared = !currentStarStatus;
+        }
+      });
+    } else {
+      // Handle the error
+    }
   }
 
   Future<void> nextPage() async {
@@ -186,6 +208,24 @@ class _FoodListState extends State<FoodList> {
                             leading: Icon(Icons.local_dining),
                             title: Text(
                                 'Tamanho da Porção: ${food.servingSize}'),
+                          ),
+                          ListTile(
+                            leading: GestureDetector(
+                              onTap: () {
+                                toggleStarStatus(
+                                  food.id,
+                                  food.is_stared,
+                                );
+                              },
+                              child: Icon(
+                                food.is_stared
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: food.is_stared
+                                    ? Colors.yellow
+                                    : Colors.grey,
+                              ),
+                            ),
                           ),
                         ],
                       ),
