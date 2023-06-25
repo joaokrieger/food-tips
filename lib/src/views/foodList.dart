@@ -1,13 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/src/views/foodCategory.dart';
-import 'package:food_tips/src/views/foodRegister.dart';
 import 'package:food_tips/src/views/home.dart';
+import '../models/food.dart';
+import '../services/apiService.dart';
+import 'foodCategory.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(FoodList());
 }
 
-class FoodList extends StatelessWidget {
+class FoodList extends StatefulWidget {
+  @override
+  _FoodListState createState() => _FoodListState();
+}
+
+class _FoodListState extends State<FoodList> {
+  late List<Food> foodList = []; // Adicionado o operador 'late' para inicialização tardia
+  int currentPage = 1;
+  late TextEditingController searchController = TextEditingController();
+  late String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery');
+
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      dynamic jsonData = jsonDecode(responseBody);
+      final results = jsonData['results'] as List<dynamic>;
+      foodList = results.map((result) => Food(
+        id: result['id'],
+        description: result['description'],
+        calories: result['calories'],
+        servingSize: result['serving_size'],
+        totalFat: result['total_fat'],
+        saturatedFat: result['saturated_fat'],
+        cholesterol: result['cholesterol'],
+        sodium: result['sodium'],
+        carbohydrate: result['carbohydrate'],
+        proteins: result['proteins'],
+        snackType: result['snack_type'],
+        foodType: result['food_type'],
+      )).toList();
+    } else {
+      // Handle the error
+      print('Error: Failed to fetch data');
+    }
+
+    setState(() {});
+  }
+
+  Future<void> nextPage() async {
+    currentPage++;
+    await fetchData();
+  }
+
+  void applyFilter() {
+    searchQuery = searchController.text;
+    currentPage = 1; // Update the page number to 1
+    fetchData();
+  }
+
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +82,6 @@ class FoodList extends StatelessWidget {
         leading: IconButton(
           icon: Image.asset('assets/img/icons/icn_back.png'),
           onPressed: () {
-            // Ação ao clicar no ícone
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => FoodCategory()),
@@ -26,141 +90,127 @@ class FoodList extends StatelessWidget {
         ),
       ),
       backgroundColor: Color(0xFF024424),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 20.0),
-            SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF008445), // Cor de fundo (024424)
-                        borderRadius: BorderRadius.circular(8.0),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Filtrar',
+                      hintStyle: TextStyle(color: Colors.white70),
+                      prefixIcon: Icon(Icons.search, color: Colors.white),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      searchQuery = searchController.text;
+                      currentPage = 1;
+                    });
+                    fetchData();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.search, color: Colors.white),
+                      Text(
+                        'Filtrar',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Batata-doce 100g',
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: foodList != null
+                ? ListView.builder(
+              itemCount: foodList.length,
+              itemBuilder: (context, index) {
+                final food = foodList[index];
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            '${food.description} - ${food.servingSize}',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Color(0xFFF0F0F0), // Cor do texto (F0F0F0)
-                              fontSize: 20.0,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8.0), // Espaçamento entre as linhas
-                          Container(
-                            color: Color(0xFFF0F0F0), // Cor de fundo do texto "Caloria 95kcal" (F0F0F0)
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Calorias:',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' 95kcal',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Lipídios:',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' 1g',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Carboidratos:',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' 28g',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Proteínas:',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' 1.5g',
-                                      style: TextStyle(
-                                        color: Colors.black, // Cor do texto (preto)
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
+                        SizedBox(height: 8),
+                        ListTile(
+                          leading: Icon(Icons.assessment),
+                          title: Text('Calorias: ${food.calories}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.local_dining),
+                          title: Text('Tamanho da Porção: ${food.servingSize}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.restaurant),
+                          title: Text('Gordura Total: ${food.totalFat}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.local_drink),
+                          title: Text('Gordura Saturada: ${food.saturatedFat}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.grade),
+                          title: Text('Colesterol: ${food.cholesterol}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.local_cafe),
+                          title: Text('Sódio: ${food.sodium}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.bakery_dining),
+                          title: Text('Carboidrato: ${food.carbohydrate}'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.fitness_center),
+                          title: Text('Proteínas: ${food.proteins}'),
+                        ),
+                      ],
                     ),
                   ),
-                  ],
-                ),
-              ),
+                );
+              },
+            )
+                : Center(
+              child: CircularProgressIndicator(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FoodRegister()),
+            MaterialPageRoute(builder: (context) => Home()),
           );
         },
         child: Icon(
           Icons.add,
-          color: Color(0xFFF0F0F0), // Cor do ícone (F0F0F0)
+          color: Color(0xFFF0F0F0),
         ),
-        backgroundColor: Color(0xFF770505), // Cor de fundo (770505)
+        backgroundColor: Color(0xFF770505),
       ),
     );
   }
+
 }

@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Credenciais inválidas'),
+            title: const Text('Credenciais inválidas'),
             actions: [
               TextButton(
                 onPressed: () {

@@ -14,6 +14,7 @@ class ApiService {
   }
 
   Future<http.Response> getRequest(String url) async {
+    print(url);
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -25,6 +26,7 @@ class ApiService {
   }
 
   Future<http.Response> postRequest(String url, dynamic body) async {
+    print(url);
     final response = await http.post(
       Uri.parse(url),
       headers: {
