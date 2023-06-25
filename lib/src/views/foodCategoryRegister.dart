@@ -99,6 +99,22 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
     if (response.statusCode == 204) {
       _descriptionController.clear();
     }
+    else{
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Não foi possível realizar a exclusão do registro!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
