@@ -91,6 +91,15 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
       }
     }
   }
+  Future<void> _foodCategoryRemove () async {
+    final url = 'http://10.0.2.2:8000/api/v1/foodtype/${idFoodCategory}/';
+
+    final response = await ApiService().deleteRequest(url);
+
+    if (response.statusCode == 204) {
+      _descriptionController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +154,30 @@ class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen>
                           backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
                         ),
                       ),
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(height: 16.0),
+                        SizedBox(
+                          height: 50.0,
+                          width: 300.0,
+                          child: Visibility(
+                            visible: idFoodCategory > 0,
+                            child: ElevatedButton(
+                              onPressed: _foodCategoryRemove,
+                              child: Text(
+                                'Excluir',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(Colors.red), // Altere para a cor desejada
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

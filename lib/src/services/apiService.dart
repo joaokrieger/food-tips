@@ -50,4 +50,17 @@ class ApiService {
     );
     return response;
   }
+
+  Future<http.Response> deleteRequest(String url) async {
+    print(url);
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Token $_apiKey',
+        'Content-Type': 'application/json',
+      },
+    );
+    return response;
+  }
+
 }
