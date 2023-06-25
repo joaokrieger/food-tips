@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:food_tips/src/views/foodCategory.dart';
-import 'package:food_tips/src/views/foodRegister.dart';
-
 import '../models/food.dart';
 import '../services/apiService.dart';
+import 'foodCategory.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:food_tips/src/views/foodRegister.dart';
+
+import 'foodDetail.dart';
 
 void main() {
   runApp(FoodList());
@@ -21,6 +24,7 @@ class _FoodListState extends State<FoodList> {
   int currentPage = 1;
   late TextEditingController searchController = TextEditingController();
   late String searchQuery = '';
+  late String pageSize = '30';
 
   @override
   void initState() {
@@ -29,7 +33,7 @@ class _FoodListState extends State<FoodList> {
   }
 
   Future<void> fetchData() async {
-    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery');
+    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
 
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
@@ -101,7 +105,7 @@ class _FoodListState extends State<FoodList> {
                   child: TextField(
                     controller: searchController,
                     style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Filtrar',
                       hintStyle: TextStyle(color: Colors.white70),
                       prefixIcon: Icon(Icons.search, color: Colors.white),
@@ -116,17 +120,17 @@ class _FoodListState extends State<FoodList> {
                     });
                     fetchData();
                   },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(Icons.search, color: Colors.white),
                       Text(
                         'Filtrar',
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
                   ),
                 ),
               ],
@@ -138,61 +142,46 @@ class _FoodListState extends State<FoodList> {
               itemCount: foodList.length,
               itemBuilder: (context, index) {
                 final food = foodList[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            '${food.description} - ${food.servingSize}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FoodDetailScreen(food: food),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: Icon(Icons.description),
+                            title: Text(
+                              '${food.description}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        ListTile(
-                          leading: Icon(Icons.assessment),
-                          title: Text('Calorias: ${food.calories}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_dining),
-                          title: Text('Tamanho da Porção: ${food.servingSize}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.restaurant),
-                          title: Text('Gordura Total: ${food.totalFat}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_drink),
-                          title: Text('Gordura Saturada: ${food.saturatedFat}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.grade),
-                          title: Text('Colesterol: ${food.cholesterol}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_cafe),
-                          title: Text('Sódio: ${food.sodium}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.bakery_dining),
-                          title: Text('Carboidrato: ${food.carbohydrate}'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.fitness_center),
-                          title: Text('Proteínas: ${food.proteins}'),
-                        ),
-                      ],
+                          ListTile(
+                            leading: Icon(Icons.assessment),
+                            title: Text('Calorias: ${food.calories}'),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.local_dining),
+                            title: Text('Tamanho da Porção: ${food.servingSize}'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
               },
             )
-                : Center(
+                : const Center(
               child: CircularProgressIndicator(),
             ),
           ),
@@ -205,13 +194,14 @@ class _FoodListState extends State<FoodList> {
             MaterialPageRoute(builder: (context) => FoodRegisterScreen()),
           );
         },
-        child: Icon(
+        backgroundColor: Color(0xFF770505),
+        child: const Icon(
           Icons.add,
           color: Color(0xFFF0F0F0),
         ),
-        backgroundColor: Color(0xFF770505),
       ),
     );
   }
+
 
 }

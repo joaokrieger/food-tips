@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_tips/src/views/biometricInfo.dart';
 import 'package:food_tips/src/views/foodCategory.dart';
 import 'package:food_tips/src/views/foodCategoryList.dart';
+import 'package:food_tips/src/views/foodList.dart';
 import 'package:food_tips/src/views/recommendationCategory.dart';
 import 'package:food_tips/src/views/register.dart';
 
@@ -38,7 +39,7 @@ class Home extends StatelessWidget {
                         children:[
                           SizedBox(height: 10.0),
                           Row(
-                            children: [
+                            children: const [
                               SizedBox(width: 16.0),
                               Text(
                                   'Dados Biométricos',
@@ -78,7 +79,7 @@ class Home extends StatelessWidget {
                                       width: 16.0,
                                     ),
                                     Row(
-                                      children: [
+                                      children: const [
                                         Text(
                                           'Homem Adulto',
                                           style: TextStyle(
@@ -95,7 +96,7 @@ class Home extends StatelessWidget {
                           ),
                           SizedBox(height: 10.0),
                           Row(
-                            children: [
+                            children: const [
                               SizedBox(width: 16.0),
                               Text(
                                 "Índice de IMC",
@@ -108,10 +109,10 @@ class Home extends StatelessWidget {
                             ],
                           ),
                           Row(
-                            children: [
+                            children: const [
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: EdgeInsets.all(10.0),
                                   child: SizedBox(
                                     height: 20,
                                     child: LinearProgressIndicator(
@@ -126,7 +127,7 @@ class Home extends StatelessWidget {
                           ),
                           SizedBox(height: 10.0),
                           Row(
-                            children: [
+                            children: const [
                               SizedBox(width: 16.0),
                               Text(
                                 'Status:',
@@ -184,7 +185,7 @@ class Home extends StatelessWidget {
                           height: 40,
                         ),
                         SizedBox(width: 20),
-                        Text(
+                        const Text(
                           'Categoria de Alimentos',
                           style: TextStyle(fontSize: 20)
                         ),
@@ -205,7 +206,7 @@ class Home extends StatelessWidget {
                     // Ação do botão Alimentos
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FoodCategory()),
+                      MaterialPageRoute(builder: (context) => FoodList()),
                     );
                   },
                   child: Row(
@@ -218,7 +219,7 @@ class Home extends StatelessWidget {
                         height: 40,
                       ),
                       SizedBox(width: 50),
-                      Text(
+                      const Text(
                           'Alimentos',
                           style: TextStyle(fontSize: 20)
                       ),
@@ -250,7 +251,7 @@ class Home extends StatelessWidget {
                         height: 50,
                       ),
                       SizedBox(width: 20),
-                      Text(
+                      const Text(
                         'Recomendações',
                         style: TextStyle(fontSize: 20),
                       )
