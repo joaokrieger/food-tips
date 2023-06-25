@@ -20,11 +20,11 @@ class FoodList extends StatefulWidget {
 }
 
 class _FoodListState extends State<FoodList> {
-  late List<Food> foodList = []; // Adicionado o operador 'late' para inicialização tardia
+  List<Food> foodList = [];
   int currentPage = 1;
-  late TextEditingController searchController = TextEditingController();
-  late String searchQuery = '';
-  late String pageSize = '30';
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
+  String pageSize = '30';
 
   @override
   void initState() {
@@ -33,13 +33,15 @@ class _FoodListState extends State<FoodList> {
   }
 
   Future<void> fetchData() async {
-    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
+    final response = await ApiService().getRequest(
+        'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
 
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);
       dynamic jsonData = jsonDecode(responseBody);
       final results = jsonData['results'] as List<dynamic>;
-      foodList = results.map((result) => Food(
+      List<Food> newFoodList = results
+          .map((result) => Food(
         id: result['id'],
         description: result['description'],
         calories: result['calories'],
@@ -52,7 +54,9 @@ class _FoodListState extends State<FoodList> {
         proteins: result['proteins'],
         snackType: result['snack_type'],
         foodType: result['food_type'],
-      )).toList();
+      ))
+          .toList();
+      foodList.addAll(newFoodList);
     } else {
       // Handle the error
       print('Error: Failed to fetch data');
@@ -68,10 +72,10 @@ class _FoodListState extends State<FoodList> {
 
   void applyFilter() {
     searchQuery = searchController.text;
-    currentPage = 1; // Update the page number to 1
+    currentPage = 1;
+    foodList.clear(); // Clear existing list when applying filter
     fetchData();
   }
-
 
   @override
   void dispose() {
@@ -113,15 +117,9 @@ class _FoodListState extends State<FoodList> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      searchQuery = searchController.text;
-                      currentPage = 1;
-                    });
-                    fetchData();
-                  },
+                  onPressed: applyFilter,
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
+                    primary: Colors.red, // Change button color to red
                   ),
                   child: Row(
                     children: const [
@@ -137,17 +135,31 @@ class _FoodListState extends State<FoodList> {
             ),
           ),
           Expanded(
-            child: foodList != null
+            child: foodList.isNotEmpty
                 ? ListView.builder(
-              itemCount: foodList.length,
+              itemCount: foodList.length + 1,
               itemBuilder: (context, index) {
+                if (index == foodList.length) {
+                  return ElevatedButton(
+                    onPressed: nextPage,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red, // Change button color to red
+                    ),
+                    child: const Text(
+                      'Carregar Mais',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+
                 final food = foodList[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FoodDetailScreen(food: food),
+                        builder: (context) =>
+                            FoodDetailScreen(food: food),
                       ),
                     );
                   },
@@ -172,7 +184,8 @@ class _FoodListState extends State<FoodList> {
                           ),
                           ListTile(
                             leading: Icon(Icons.local_dining),
-                            title: Text('Tamanho da Porção: ${food.servingSize}'),
+                            title: Text(
+                                'Tamanho da Porção: ${food.servingSize}'),
                           ),
                         ],
                       ),
@@ -202,6 +215,4 @@ class _FoodListState extends State<FoodList> {
       ),
     );
   }
-
-
 }
