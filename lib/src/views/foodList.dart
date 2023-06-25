@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/src/views/home.dart';
-import '../models/food.dart';
-import '../services/apiService.dart';
-import 'foodCategory.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:food_tips/src/views/foodCategory.dart';
+import 'package:food_tips/src/views/foodRegister.dart';
 
 void main() {
   runApp(FoodList());
@@ -201,7 +197,7 @@ class _FoodListState extends State<FoodList> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Home()),
+            MaterialPageRoute(builder: (context) => FoodRegisterScreen()),
           );
         },
         child: Icon(

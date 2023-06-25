@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-
-import '../services/apiService.dart';
 import 'package:http/http.dart' as http;
-
+import '../services/apiService.dart';
 import '../utils/utils.dart';
 import 'home.dart';
+import 'dart:convert';
 
 void main() {
   runApp(RegisterScreen());

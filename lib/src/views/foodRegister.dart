@@ -1,11 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:food_tips/src/views/foodList.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../services/apiService.dart';
 
 void main() {
-  runApp(FoodRegister());
+  runApp(FoodRegisterScreen());
 }
 
-class FoodRegister extends StatelessWidget {
+class FoodRegisterScreen extends StatefulWidget {
+  @override
+  _FoodRegisterScreenState createState() => _FoodRegisterScreenState();
+}
+
+class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
+
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _carbohydratesController = TextEditingController();
+  final TextEditingController _lipidsController = TextEditingController();
+  final TextEditingController _caloriesController = TextEditingController();
+  final TextEditingController _proteinsController = TextEditingController();
+  final TextEditingController _foodCategoryController = TextEditingController();
+
+  Future<void> _foodRegister () async{
+
+    final url = 'http://10.0.2.2:8000/api/v1/food/';
+
+    final body = json.encode({
+      'username': _descriptionController.text,
+      'first_name': _carbohydratesController.text,
+      'last_name': _lipidsController.text,
+      'email': _caloriesController.text,
+      'birth_date': _proteinsController.text,
+      'password': _foodCategoryController.text
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +46,6 @@ class FoodRegister extends StatelessWidget {
         leading: IconButton(
           icon: Image.asset('assets/img/icons/icn_back.png'),
           onPressed: () {
-            // Ação ao clicar no ícone
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => FoodList()),
@@ -35,6 +65,7 @@ class FoodRegister extends StatelessWidget {
                 child: Column(
                   children: [
                     TextField(
+                      controller: _descriptionController,
                       decoration: InputDecoration(
                         labelText: 'Descrição',
                         labelStyle: TextStyle(
@@ -46,6 +77,7 @@ class FoodRegister extends StatelessWidget {
                     ),
                     SizedBox(height: 16.0),
                     TextField(
+                      controller: _carbohydratesController,
                       decoration: InputDecoration(
                         labelText: 'Carboidratos',
                         labelStyle: TextStyle(
@@ -57,6 +89,7 @@ class FoodRegister extends StatelessWidget {
                     ),
                     SizedBox(height: 16.0),
                     TextField(
+                      controller: _lipidsController,
                       decoration: InputDecoration(
                         labelText: 'Lipídios',
                         labelStyle: TextStyle(
@@ -68,6 +101,7 @@ class FoodRegister extends StatelessWidget {
                     ),
                     SizedBox(height: 16.0),
                     TextField(
+                      controller: _caloriesController,
                       decoration: InputDecoration(
                         labelText: 'Calorias',
                         labelStyle: TextStyle(
@@ -79,6 +113,7 @@ class FoodRegister extends StatelessWidget {
                     ),
                     SizedBox(height: 16.0),
                     TextField(
+                      controller: _proteinsController,
                       decoration: InputDecoration(
                         labelText: 'Proteínas',
                         labelStyle: TextStyle(
@@ -149,8 +184,11 @@ class FoodRegister extends StatelessWidget {
                                   filled: true,
                                   fillColor: Colors.white,
                                 ),
-                                onChanged: (value) {
-                                  // Lógica para lidar com a seleção do valor
+                                value: _foodCategoryController.text,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _foodCategoryController.text = newValue!;
+                                  });
                                 },
                               ),
                             ),

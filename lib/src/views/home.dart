@@ -178,16 +178,50 @@ class Home extends StatelessWidget {
                       children:[
                         SizedBox(width: 5),
                         Image.asset(
-                          'assets/img/icons/icn_food.png',
+                          'assets/img/icons/icn_category.png',
                           width: 40,
                           height: 40,
                         ),
-                        SizedBox(width: 50),
+                        SizedBox(width: 20),
                         Text(
-                          'Alimentos',
+                          'Categoria de Alimentos',
                           style: TextStyle(fontSize: 20)
                         ),
                       ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              SizedBox(
+                height: 60.0,
+                width: 350.0,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFF0F0F0), // Define a cor de fundo
+                    onPrimary: Color(0xFF504848), // Define a cor do texto
+                  ),
+                  onPressed: () {
+                    // Ação do botão Alimentos
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FoodCategory()),
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children:[
+                      SizedBox(width: 5),
+                      Image.asset(
+                        'assets/img/icons/icn_food.png',
+                        width: 40,
+                        height: 40,
+                      ),
+                      SizedBox(width: 50),
+                      Text(
+                          'Alimentos',
+                          style: TextStyle(fontSize: 20)
+                      ),
+                    ],
                   ),
                 ),
               ),
