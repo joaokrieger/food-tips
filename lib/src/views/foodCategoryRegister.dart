@@ -1,53 +1,93 @@
 import 'package:flutter/material.dart';
-import 'package:food_tips/src/views/foodCategory.dart';
+import 'package:food_tips/src/models/foodCategory.dart';
 import 'package:food_tips/src/views/foodCategoryList.dart';
-import 'package:food_tips/src/views/foodList.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../services/apiService.dart';
 
 void main() {
-  runApp(FoodCategoryRegisterScreen());
+  runApp(FoodCategoryRegisterScreen(foodCategory: null,));
 }
 
 class FoodCategoryRegisterScreen extends StatefulWidget {
+  final FoodCategory? foodCategory;
+
+  FoodCategoryRegisterScreen({this.foodCategory});
+
   @override
-  _FoodCategoryRegisterScreenState createState() => _FoodCategoryRegisterScreenState();
+  _FoodCategoryRegisterScreenState createState() => _FoodCategoryRegisterScreenState(foodCategory: foodCategory);
 }
 
 class _FoodCategoryRegisterScreenState extends State<FoodCategoryRegisterScreen> {
 
+  late FoodCategory? foodCategory;
+  late final int idFoodCategory;
   final TextEditingController _descriptionController = TextEditingController();
 
-  Future<void> _foodCategoryRegister () async{
+  _FoodCategoryRegisterScreenState({this.foodCategory}){
+    idFoodCategory = foodCategory?.id ?? 0;
+    _descriptionController.text = foodCategory?.description ?? '';
+  }
+
+  Future<void> _foodCategoryRegister () async {
 
     final url = 'http://10.0.2.2:8000/api/v1/foodtype/';
 
-    final body = json.encode({
-      'description': _descriptionController.text,
-    });
+    if (idFoodCategory > 0) {
 
-    final response = await ApiService().postRequest(url, body);
+      final body = json.encode({
+        'id': idFoodCategory,
+        'description': _descriptionController.text,
+      });
 
-    if(response.statusCode == 201){
-      //Limpando conteúdo dos campos
-      _descriptionController.clear();
+      final response = await ApiService().putRequest(url, body);
+
+      if (response.statusCode == 200) {
+        _descriptionController.clear();
+      }
+      else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Não foi possível realizar a alteração do registro!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
-    else if (response.statusCode == 401) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Não foi possível realizar cadastro de registro!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+    else {
+
+      final body = json.encode({
+        'description': _descriptionController.text,
+      });
+
+      final response = await ApiService().postRequest(url, body);
+
+      if (response.statusCode == 201) {
+        _descriptionController.clear();
+      }
+      else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Não foi possível realizar o cadastro do registro!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 

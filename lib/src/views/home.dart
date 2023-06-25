@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_tips/main.dart';
 import 'package:food_tips/src/views/biometricInfo.dart';
-import 'package:food_tips/src/views/foodCategory.dart';
 import 'package:food_tips/src/views/foodCategoryList.dart';
 import 'package:food_tips/src/views/foodList.dart';
 import 'package:food_tips/src/views/recommendationCategory.dart';
@@ -286,6 +286,39 @@ class Home extends StatelessWidget {
                         SizedBox(width: 20),
                         Text(
                           'Dados de Usuário',
+                          style: TextStyle(fontSize: 20),
+                        )
+                      ]
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              SizedBox(
+                height: 60.0,
+                width: 350.0,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFF0F0F0), // Define a cor de fundo
+                    onPrimary: Color(0xFF504848),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children:[
+                        SizedBox(width: 10),
+                        Image.asset(
+                          'assets/img/icons/icn_logout.png',
+                          width: 35,
+                          height: 35,
+                        ),
+                        SizedBox(width: 90),
+                        Text(
+                          'Sair',
                           style: TextStyle(fontSize: 20),
                         )
                       ]

@@ -37,4 +37,17 @@ class ApiService {
     );
     return response;
   }
+
+  Future<http.Response> putRequest(String url, dynamic body) async {
+    print(url);
+    final response = await http.put(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Token $_apiKey',
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    );
+    return response;
+  }
 }

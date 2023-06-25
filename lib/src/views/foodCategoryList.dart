@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:food_tips/src/models/foodCategory.dart';
-import 'package:food_tips/src/views/foodCategoryRegister.dart';
-import 'package:food_tips/src/views/foodRegister.dart';
-import 'package:food_tips/src/views/home.dart';
-import '../services/apiService.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:food_tips/src/views/foodCategoryRegister.dart';
+import 'package:food_tips/src/views/home.dart';
+import 'package:food_tips/src/models/foodCategory.dart';
+import '../services/apiService.dart';
 
 void main() {
   runApp(FoodCategoryList());
@@ -16,10 +15,11 @@ class FoodCategoryList extends StatefulWidget {
 }
 
 class _FoodCategoryListState extends State<FoodCategoryList> {
-  late List<FoodCategory> foodCategoryList = []; // Adicionado o operador 'late' para inicialização tardia
+  List<FoodCategory> foodCategoryList = [];
   int currentPage = 1;
-  late TextEditingController searchController = TextEditingController();
-  late String searchQuery = '';
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
+  String pageSize = '30';
 
   @override
   void initState() {
@@ -28,20 +28,21 @@ class _FoodCategoryListState extends State<FoodCategoryList> {
   }
 
   Future<void> fetchData() async {
-
-    final response = await ApiService().getRequest('http://10.0.2.2:8000/api/v1/foodtype/?page=$currentPage&search=$searchQuery');
+    final response = await ApiService().getRequest(
+        'http://10.0.2.2:8000/api/v1/foodtype/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
 
     if (response.statusCode == 200) {
+
       String responseBody = utf8.decode(response.bodyBytes);
       dynamic jsonData = jsonDecode(responseBody);
       final results = jsonData['results'] as List<dynamic>;
-      foodCategoryList = results.map((result) => FoodCategory(
+      List<FoodCategory> newFoodCategoryList = results
+          .map((result) => FoodCategory(
         id: result['id'],
-        description: result['description'],
-      )).toList();
-    } else {
-      // Handle the error
-      print('Error: Failed to fetch data');
+        description: result['description']
+      ))
+          .toList();
+      foodCategoryList.addAll(newFoodCategoryList);
     }
 
     setState(() {});
@@ -54,7 +55,8 @@ class _FoodCategoryListState extends State<FoodCategoryList> {
 
   void applyFilter() {
     searchQuery = searchController.text;
-    currentPage = 1; // Update the page number to 1
+    currentPage = 1;
+    foodCategoryList.clear(); // Clear existing list when applying filter
     fetchData();
   }
 
@@ -90,7 +92,7 @@ class _FoodCategoryListState extends State<FoodCategoryList> {
                   child: TextField(
                     controller: searchController,
                     style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Filtrar',
                       hintStyle: TextStyle(color: Colors.white70),
                       prefixIcon: Icon(Icons.search, color: Colors.white),
@@ -98,15 +100,12 @@ class _FoodCategoryListState extends State<FoodCategoryList> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      searchQuery = searchController.text;
-                      currentPage = 1;
-                    });
-                    fetchData();
-                  },
+                  onPressed: applyFilter,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red, // Change button color to red
+                  ),
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(Icons.search, color: Colors.white),
                       Text(
                         'Filtrar',
@@ -114,41 +113,62 @@ class _FoodCategoryListState extends State<FoodCategoryList> {
                       ),
                     ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                  ),
                 ),
               ],
             ),
           ),
           Expanded(
-            child: foodCategoryList != null
+            child: foodCategoryList.isNotEmpty
                 ? ListView.builder(
-              itemCount: foodCategoryList.length,
+              itemCount: foodCategoryList.length + 1,
               itemBuilder: (context, index) {
+                if (index == foodCategoryList.length) {
+                  return ElevatedButton(
+                    onPressed: nextPage,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red, // Change button color to red
+                    ),
+                    child: const Text(
+                      'Carregar Mais',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+
                 final foodCategory = foodCategoryList[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            '${foodCategory.description}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            FoodCategoryRegisterScreen(foodCategory: foodCategory),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text(
+                              '${foodCategory.description}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
               },
             )
-                : Center(
+                : const Center(
               child: CircularProgressIndicator(),
             ),
           ),
@@ -161,11 +181,11 @@ class _FoodCategoryListState extends State<FoodCategoryList> {
             MaterialPageRoute(builder: (context) => FoodCategoryRegisterScreen()),
           );
         },
-        child: Icon(
+        backgroundColor: Color(0xFF770505),
+        child: const Icon(
           Icons.add,
           color: Color(0xFFF0F0F0),
         ),
-        backgroundColor: Color(0xFF770505),
       ),
     );
   }

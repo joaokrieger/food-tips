@@ -6,4 +6,6 @@ class FoodCategory {
     required this.id,
     required this.description,
   });
+
+  String get getDescription => description;
 }
