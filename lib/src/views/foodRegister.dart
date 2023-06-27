@@ -202,19 +202,6 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                     ),
                     SizedBox(height: 16.0),
                     TextField(
-                      controller: _caloriesController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Calorias',
-                        labelStyle: TextStyle(
-                          color: Colors.black45, // Defina a cor desejada aqui
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    TextField(
                       controller: _servingSizeController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -224,6 +211,27 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'g', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    TextField(
+                      controller: _caloriesController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Calorias',
+                        labelStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        suffixText: 'kcal', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -237,6 +245,10 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'mg', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -250,6 +262,10 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'mg', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -263,6 +279,10 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'mg', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -276,6 +296,10 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'mg', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -289,6 +313,10 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'mg', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),
@@ -302,6 +330,10 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
+                        suffixText: 'mg', // Texto exibido à direita do TextField
+                        suffixStyle: TextStyle(
+                          color: Colors.black45, // Defina a cor desejada aqui
+                        ),
                       ),
                     ),
                     SizedBox(height: 32.0),
