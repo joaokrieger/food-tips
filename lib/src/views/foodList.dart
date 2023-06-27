@@ -50,7 +50,7 @@ class _FoodListState extends State<FoodList> {
         cholesterol: result['cholesterol'].toString(),
         sodium: result['sodium'].toString(),
         carbohydrate: result['carbohydrate'].toString(),
-        proteins: result['proteins'].toString(),
+        proteins: result['protein'].toString(),
         foodType: result['food_type'],
         is_stared: result['is_stared'],
       ))
@@ -205,7 +205,7 @@ class _FoodListState extends State<FoodList> {
                           ListTile(
                             leading: Icon(Icons.local_dining),
                             title: Text(
-                                'Tamanho da Porção: ${food.servingSize}'),
+                                'Tamanho da Porção: ${food.servingSize} mg'),
                           ),
                           ListTile(
                             leading: GestureDetector(

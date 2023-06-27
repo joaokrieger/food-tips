@@ -46,31 +46,31 @@ class FoodDetailScreen extends StatelessWidget {
                     ),
                     ListTile(
                       leading: Icon(Icons.local_dining),
-                      title: Text('Tamanho da Porção: ${food.servingSize}'),
+                      title: Text('Tamanho da Porção: ${food.servingSize} mg'),
                     ),
                     ListTile(
                       leading: Icon(Icons.restaurant),
-                      title: Text('Gordura Total: ${food.totalFat}'),
+                      title: Text('Gordura Total: ${food.totalFat} mg'),
                     ),
                     ListTile(
                       leading: Icon(Icons.local_drink),
-                      title: Text('Gordura Saturada: ${food.saturatedFat}'),
+                      title: Text('Gordura Saturada: ${food.saturatedFat} mg'),
                     ),
                     ListTile(
                       leading: Icon(Icons.grade),
-                      title: Text('Colesterol: ${food.cholesterol}'),
+                      title: Text('Colesterol: ${food.cholesterol} mg'),
                     ),
                     ListTile(
                       leading: Icon(Icons.local_cafe),
-                      title: Text('Sódio: ${food.sodium}'),
+                      title: Text('Sódio: ${food.sodium} mg'),
                     ),
                     ListTile(
                       leading: Icon(Icons.bakery_dining),
-                      title: Text('Carboidrato: ${food.carbohydrate}'),
+                      title: Text('Carboidrato: ${food.carbohydrate} mg'),
                     ),
                     ListTile(
                       leading: Icon(Icons.fitness_center),
-                      title: Text('Proteínas: ${food.proteins}'),
+                      title: Text('Proteínas: ${food.proteins} mg'),
                     ),
                   ],
                 ),
