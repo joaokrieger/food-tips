@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:food_tips/src/views/home.dart';
 
 import '../models/food.dart';
 import '../services/apiService.dart';
-import 'foodCategory.dart';
 import 'foodDetail.dart';
 import 'foodRegister.dart';
 
@@ -115,7 +114,7 @@ class _FoodListState extends State<FoodList> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => FoodCategory()),
+              MaterialPageRoute(builder: (context) => Home()),
             );
           },
         ),
