@@ -9,7 +9,6 @@ class Food {
   final String sodium;
   final String carbohydrate;
   final String proteins;
-  final int snackType;
   final int foodType;
   bool is_stared;
 
@@ -24,7 +23,6 @@ class Food {
     required this.sodium,
     required this.carbohydrate,
     required this.proteins,
-    required this.snackType,
     required this.foodType,
     required this.is_stared
   });
