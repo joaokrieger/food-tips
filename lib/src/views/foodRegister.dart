@@ -76,20 +76,37 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
     _totalFatController.text = food?.totalFat ?? '';
   }
 
-  Future<void> _foodRegister () async {
-
+  Future<void> _foodRegister() async {
     final body = json.encode({
       'description': _descriptionController.text,
-      'calories': _caloriesController.text != '' ? double.parse(_caloriesController.text) : 0,
-      'carbohydrate': _carbohydrateController.text != '' ? double.parse(_carbohydrateController.text): 0,
-      'proteins': _proteinsController.text != '' ? double.parse(_proteinsController.text): 0,
-      'cholesterol': _cholesterolController.text != '' ? double.parse(_cholesterolController.text): 0,
-      'saturated_fat': _saturedFatController.text != '' ? double.parse(_saturedFatController.text): 0,
-      'servingSize': _servingSizeController.text != '' ? double.parse(_servingSizeController.text): 0,
-      'sodium': _sodiumController.text != '' ? double.parse(_sodiumController.text): 0,
-      'total_fat': double.parse(_totalFatController.text),
-      'food_type': selectedCategory?.id
+      'calories': _caloriesController.text.isNotEmpty
+          ? double.parse(_caloriesController.text)
+          : null,
+      'carbohydrate': _carbohydrateController.text.isNotEmpty
+          ? double.parse(_carbohydrateController.text)
+          : null,
+      'proteins': _proteinsController.text.isNotEmpty
+          ? double.parse(_proteinsController.text)
+          : null,
+      'cholesterol': _cholesterolController.text.isNotEmpty
+          ? double.parse(_cholesterolController.text)
+          : null,
+      'saturated_fat': _saturedFatController.text.isNotEmpty
+          ? double.parse(_saturedFatController.text)
+          : null,
+      'servingSize': _servingSizeController.text.isNotEmpty
+          ? double.parse(_servingSizeController.text)
+          : null,
+      'sodium':
+      _sodiumController.text.isNotEmpty ? double.parse(_sodiumController.text) : null,
+      'total_fat': _totalFatController.text.isNotEmpty
+          ? double.parse(_totalFatController.text)
+          : null,
+      'food_type': selectedCategory?.id,
     });
+
+    // Rest of your code...
+
 
     if (idFood > 0) {
 
