@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
         }
       }
       catch (e) {
-        throw Exception("Erro ao carregar Usuário");
+        print("Erro ao carregar Usuário ${e.toString()}");
       }
     }
     else {
@@ -335,8 +335,43 @@ class _HomeState extends State<Home> {
                       )
                     ]
                 ),
+                ),
               ),
+              SizedBox(height: 16.0),
+
+              SizedBox(
+                height: 60.0,
+                width: 350.0,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFF0F0F0), // Define a cor de fundo
+                    onPrimary: Color(0xFF504848), // Define a cor do texto
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FoodList(filteringType: Consts.FAVORITE_FOODS)),
+                    );
+                  },
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children:[
+                        Image.asset(
+                          'assets/img/icons/icn_star.png',
+                          width: 50,
+                          height: 50,
+                        ),
+                        SizedBox(width: 20),
+                        const Text(
+                          'Favoritos',
+                          style: TextStyle(fontSize: 20),
+                        )
+                      ]
+                  ),
+                ),
               ),
+
+
               SizedBox(height: 16.0),
               SizedBox(
                 height: 60.0,

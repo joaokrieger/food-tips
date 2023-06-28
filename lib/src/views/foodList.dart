@@ -54,6 +54,10 @@ class _FoodListState extends State<FoodList> {
         response = await apiService.getRequest(
             'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize&slimming=True');
         break;
+      case Consts.FAVORITE_FOODS:
+        response = await apiService.getRequest(
+            'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize&is_stared=True');
+        break;
       default:
         response = await apiService.getRequest(
             'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
