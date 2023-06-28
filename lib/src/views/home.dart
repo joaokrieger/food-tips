@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
   late String _lastName = '';
   late String _status = '';
   late int _age = 0;
-  late double? _imc = 0;
+  late double? _imcPercent = 0;
 
   @override
   void initState() {
@@ -71,25 +71,47 @@ class _HomeState extends State<Home> {
 
           //Verificando Status
           int age = Utils.calculateAge(user.birthDate);
+          double idealImc = 0;
 
-          if(age > 18){
-            if(userInfo.imc! > 18.5 && userInfo.imc!   < 24.9) {
-              _status = "Saudável";
-            }else {
-              _status = "Não Saudável";
-            }
-          }
-          else{
-            if(userInfo.imc! > 5 && userInfo.imc!  < 85) {
-              _status = "Saudável";
-            }else {
-              _status = "Não Saudável";
-            }
-          }
+          //Menores de 19 anos
+          if(age < 19){
 
+            idealImc = 84.9;
+
+            if(userInfo.imc! < 5)
+              _status = "Baixo Peso";
+            else if(userInfo.imc! > 5 && userInfo.imc! < 84.9)
+              _status = "Eutrofia";
+            else
+              _status = "Sobrepeso";
+          }
+          else if(age > 19 && age < 60){ //Entre 19 e 60 anos
+
+            idealImc = 25;
+
+            if(userInfo.imc! < 18.5)
+              _status = "Baixo Peso";
+            else if(userInfo.imc! > 18.5 && userInfo.imc! < 25)
+              _status = "Eutrofia";
+            else if(userInfo.imc! > 25 && userInfo.imc! < 30)
+              _status = "Sobrepeso";
+            else
+              _status = "Obesidade";
+          }
+          else if(age > 60){ //Maiores de 60 anos
+
+            idealImc = 27;
+
+            if(userInfo.imc! < 22)
+              _status = "Baixo Peso";
+            else if(userInfo.imc! > 22 && userInfo.imc! < 27)
+              _status = "Eutrofia";
+            else
+              _status = "Sobrepeso";
+          }
 
           setState(() {
-            _imc = userInfo.imc;
+            _imcPercent = (userInfo.imc! / idealImc); //Calculando porcentagem equivalente ao ideal
             _age = age;
             _firstName = user.firstName;
             _lastName = user.lastName;
@@ -125,108 +147,116 @@ class _HomeState extends State<Home> {
                   ),
                   child:(
                     Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:[
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: const [
-                          SizedBox(width: 16.0),
-                          Text(
-                            'Dados Biométricos',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF504848),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children:[
-                          SizedBox(
-                            width: 16.0,
-                            height: 10.0,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 16.0,
-                                height: 16.0,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: const [
+                            SizedBox(width: 16.0),
+                            Text(
+                              'Dados Biométricos',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF504848),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                   '$_firstName $_lastName ($_age anos)',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Color(0xFF504848),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children:[
+                            SizedBox(
+                              width: 16.0,
+                              height: 10.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 16.0,
+                                  height: 16.0,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                     '$_firstName $_lastName ($_age anos)',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Color(0xFF504848),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 16.0,
-                              ),
-                            ],
-                          ),
-                        ]
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: const [
-                          SizedBox(width: 16.0),
-                          Text(
-                            "Índice de IMC",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF504848),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 16.0,
+                                ),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: SizedBox(
-                                height: 20,
-                                child: LinearProgressIndicator(
-                                  value: _imc,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0C9522)),
-                                  backgroundColor: Color(0xFFD9D9D9),
+                          ]
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: const [
+                            SizedBox(width: 16.0),
+                            Text(
+                              "Índice de IMC",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF504848),
+                              ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: SizedBox(
+                                  height: 20,
+                                  child: LinearProgressIndicator(
+                                    value: _imcPercent,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      _imcPercent! > 1
+                                          ? Colors.red
+                                          : _imcPercent! < 0.5 && _imcPercent! > 0.25
+                                          ? Colors.orange
+                                          : _imcPercent! < 0.25
+                                          ? Colors.red
+                                          : Color(0xFF0C9522),
+                                    ),
+                                    backgroundColor: Color(0xFFD9D9D9),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: [
-                          SizedBox(width: 16.0),
-                          Text(
-                            'Status:',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF504848),
+                          ],
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            SizedBox(width: 16.0),
+                            Text(
+                              'Classificação:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF504848),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 10.0),
-                          Text(
-                            _status,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xFF504848),
+                            SizedBox(width: 5.0),
+                            Text(
+                              _status,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF504848),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ]
-                )
+                          ],
+                        ),
+                      ]
+                    )
                   ),
                 ),
                 onTap: () {
