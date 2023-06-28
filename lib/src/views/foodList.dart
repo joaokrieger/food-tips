@@ -204,31 +204,52 @@ class _FoodListState extends State<FoodList> {
                           ),
                           ListTile(
                             leading: Icon(Icons.local_dining),
-                            title: Text(
-                                'Tamanho da Porção: ${food.servingSize} mg'),
+                            title: Text('Tamanho da Porção: ${food.servingSize} mg'),
                           ),
-                          ListTile(
-                            leading: GestureDetector(
-                              onTap: () {
-                                toggleStarStatus(
-                                  food.id,
-                                  food.is_stared,
-                                );
-                              },
-                              child: Icon(
-                                food.is_stared
-                                    ? Icons.star
-                                    : Icons.star_border,
-                                color: food.is_stared
-                                    ? Colors.yellow
-                                    : Colors.grey,
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0), // Adjust the left padding as needed
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    toggleStarStatus(
+                                      food.id,
+                                      food.is_stared,
+                                    );
+                                  },
+                                  child: Icon(
+                                    food.is_stared ? Icons.star : Icons.star_border,
+                                    color: food.is_stared ? Colors.yellow : Colors.grey,
+                                    size: 30, // Adjust the size of the icon as needed
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FoodRegisterScreen(food: food),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16.0), // Adjust the left spacing between the icons as needed
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Colors.red,
+                                      size: 30, // Adjust the size of the icon as needed
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
+
+
                 );
               },
             )

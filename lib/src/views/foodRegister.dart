@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_tips/src/models/food.dart';
+import 'package:food_tips/src/models/foodCategory.dart';
 import 'package:food_tips/src/views/foodList.dart';
 import 'dart:convert';
 import '../services/apiService.dart';
@@ -18,6 +19,37 @@ class FoodRegisterScreen extends StatefulWidget {
 }
 
 class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
+  List<FoodCategory> categoriesList = [];
+  FoodCategory? selectedCategory; // Categoria selecionada
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    final response = await ApiService().getRequest(
+        'http://10.0.2.2:8000/api/v1/foodtype/');
+
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      dynamic jsonData = jsonDecode(responseBody);
+      final results = jsonData['results'] as List<dynamic>;
+      List<FoodCategory> categories = results
+          .map((result) => FoodCategory(
+        id: result['id'],
+        description: result['description'],
+      ))
+          .toList();
+      categoriesList = categories;
+    } else {
+      // Handle the error
+      print('Error: Failed to fetch data');
+    }
+    setState(() {});
+
+  }
 
   late Food? food;
   late final int idFood;
@@ -46,21 +78,22 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
 
   Future<void> _foodRegister () async {
 
+    final body = json.encode({
+      'description': _descriptionController.text,
+      'calories': _caloriesController.text != '' ? double.parse(_caloriesController.text) : 0,
+      'carbohydrate': _carbohydrateController.text != '' ? double.parse(_carbohydrateController.text): 0,
+      'proteins': _proteinsController.text != '' ? double.parse(_proteinsController.text): 0,
+      'cholesterol': _cholesterolController.text != '' ? double.parse(_cholesterolController.text): 0,
+      'saturated_fat': _saturedFatController.text != '' ? double.parse(_saturedFatController.text): 0,
+      'servingSize': _servingSizeController.text != '' ? double.parse(_servingSizeController.text): 0,
+      'sodium': _sodiumController.text != '' ? double.parse(_sodiumController.text): 0,
+      'total_fat': double.parse(_totalFatController.text),
+      'food_type': selectedCategory?.id
+    });
+
     if (idFood > 0) {
 
       final url = 'http://10.0.2.2:8000/api/v1/food/${idFood}/';
-
-      final body = json.encode({
-        'description': _descriptionController.text,
-        'calories': _caloriesController.text,
-        'carbohydrate': _carbohydrateController.text,
-        'proteins': _proteinsController.text,
-        'cholesterol': _cholesterolController.text,
-        'saturated_fat': _saturedFatController.text,
-        'servingSize': _servingSizeController.text,
-        'sodium': _sodiumController.text,
-        'total_fat': _totalFatController.text,
-      });
 
       final response = await ApiService().putRequest(url, body);
 
@@ -94,18 +127,6 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
     else {
 
       final url = 'http://10.0.2.2:8000/api/v1/food/';
-
-      final body = json.encode({
-        'description': _descriptionController.text,
-        'calories': _caloriesController.text,
-        'carbohydrate': _carbohydrateController.text,
-        'proteins': _proteinsController.text,
-        'cholesterol': _cholesterolController.text,
-        'saturated_fat': _saturedFatController.text,
-        'servingSize': _servingSizeController.text,
-        'sodium': _sodiumController.text,
-        'total_fat': _totalFatController.text,
-      });
 
       final response = await ApiService().postRequest(url, body);
 
@@ -191,7 +212,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                   children: [
                     TextField(
                       controller: _descriptionController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Nome',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -201,10 +222,36 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                       ),
                     ),
                     SizedBox(height: 16.0),
+
+
+                DropdownButtonFormField<FoodCategory>(
+                  value: selectedCategory,
+                  items: categoriesList.map((category) {
+                    return DropdownMenuItem<FoodCategory>(
+                      value: category,
+                      child: Text(category.description),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Categoria',
+                    labelStyle: TextStyle(
+                      color: Colors.black45, // Defina a cor desejada aqui
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+
+                    SizedBox(height: 16.0),
                     TextField(
                       controller: _servingSizeController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Tamanho da porção',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -217,11 +264,11 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     TextField(
                       controller: _caloriesController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Calorias',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -234,11 +281,11 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     TextField(
                       controller: _totalFatController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Gordura Total',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -255,7 +302,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                     TextField(
                       controller: _saturedFatController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Gordura Saturada',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -272,7 +319,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                     TextField(
                       controller: _cholesterolController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Colesterol',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -289,7 +336,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                     TextField(
                       controller: _sodiumController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Sódio',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -306,7 +353,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                     TextField(
                       controller: _carbohydrateController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Carboidratos',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -323,7 +370,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                     TextField(
                       controller: _proteinsController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Proteínas',
                         labelStyle: TextStyle(
                           color: Colors.black45, // Defina a cor desejada aqui
@@ -342,14 +389,14 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                       width: 300.0,
                       child: ElevatedButton(
                         onPressed: _foodRegister,
-                        child: Text(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
+                        ),
+                        child: const Text(
                           'Salvar',
                           style: TextStyle(
                             fontSize: 20,
                           ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF008445)), // Altere para a cor desejada
                         ),
                       ),
                     ),
@@ -363,14 +410,14 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
                             visible: idFood > 0,
                             child: ElevatedButton(
                               onPressed: _foodRemove,
-                              child: Text(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(Colors.red), // Altere para a cor desejada
+                              ),
+                              child: const Text(
                                 'Excluir',
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(Colors.red), // Altere para a cor desejada
                               ),
                             ),
                           ),
