@@ -30,38 +30,10 @@ class _BiometricInfoScreenState extends State<BiometricInfoScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData().then((userInfo) {
-
-      userIdInfo = userInfo.id;
-      _heigthController.text = userInfo.heigth.toString();
-      _weightController.text = userInfo.weight.toString();
-      _muscleMassController.text = userInfo.muscleMass.toString();
-      _fatPercentageController.text = userInfo.fatPercentage.toString();
-      _imcController.text = userInfo.imc.toString();
-      userId = userInfo.userId;
-
-    }).catchError((error){
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Erro ao carregar Usuário'),
-          content: Text('Detalhes do erro: $error'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    });
-
+    fetchData();
   }
 
-
-  Future<UserInfo> fetchData() async {
+  Future<void> fetchData() async {
 
     final response = await ApiService().getRequest(
       'http://10.0.2.2:8000/api/v1/userinfo/',
@@ -72,27 +44,27 @@ class _BiometricInfoScreenState extends State<BiometricInfoScreen> {
       dynamic jsonData = jsonDecode(responseBody);
 
       try {
-        int id = jsonData["id"];
-        double heigth = jsonData["heigth"];
-        double weight = jsonData["weight"];
-        double muscleMass = jsonData["muscle_mass"];
-        double fatPercentage = jsonData["fat_percentage"];
-        double imc = jsonData["imc"];
-        int userId = jsonData["user"];
-
         UserInfo userInfo = UserInfo(
-            id: id,
-            heigth: heigth,
-            weight: weight,
-            muscleMass: muscleMass,
-            fatPercentage: fatPercentage,
-            imc: imc,
-            userId: userId);
+            id: jsonData["id"],
+            heigth: jsonData["heigth"],
+            weight: jsonData["weight"],
+            muscleMass: jsonData["muscle_mass"],
+            fatPercentage: jsonData["fat_percentage"],
+            imc: jsonData["imc"],
+            userId: jsonData["user"]
+        );
 
-        return userInfo; // Retorna o objeto UserInfo
+        userIdInfo = userInfo.id;
+        _heigthController.text = userInfo.heigth.toString();
+        _weightController.text = userInfo.weight.toString();
+        _muscleMassController.text = userInfo.muscleMass.toString();
+        _fatPercentageController.text = userInfo.fatPercentage.toString();
+        _imcController.text = userInfo.imc.toString();
+        userId = userInfo.userId;
+        
       }
       catch (e) {
-        throw Exception("Erro ao carregar Usuário: ${response.statusCode}");
+        throw Exception("Erro ao carregar Usuário");
       }
     }
     else {
