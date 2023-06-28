@@ -3,6 +3,7 @@ import 'package:food_tips/src/models/food.dart';
 import 'package:food_tips/src/models/foodCategory.dart';
 import 'package:food_tips/src/views/foodList.dart';
 import 'dart:convert';
+import '../consts.dart';
 import '../services/apiService.dart';
 
 void main() {
@@ -211,7 +212,7 @@ class _FoodRegisterScreenState extends State<FoodRegisterScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  FoodList()),
+              MaterialPageRoute(builder: (context) =>  FoodList(filteringType:Consts.STANDARD_FOODS)),
             );
           },
         ),

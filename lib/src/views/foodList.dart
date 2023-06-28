@@ -2,17 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:food_tips/src/views/home.dart';
+import 'package:http/src/response.dart';
 
 import '../models/food.dart';
 import '../services/apiService.dart';
 import 'foodDetail.dart';
 import 'foodRegister.dart';
+import '../consts.dart';
 
 void main() {
-  runApp(FoodList());
+  runApp(const FoodList(filteringType:Consts.STANDARD_FOODS));
 }
 
 class FoodList extends StatefulWidget {
+  final int filteringType;
+
+  const FoodList({required this.filteringType});
+
   @override
   _FoodListState createState() => _FoodListState();
 }
@@ -32,8 +38,26 @@ class _FoodListState extends State<FoodList> {
   }
 
   Future<void> fetchData() async {
-    final response = await apiService.getRequest(
-        'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
+
+    var response;
+
+    switch (widget.filteringType){
+      case Consts.STANDARD_FOODS:
+        response = await apiService.getRequest(
+            'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
+        break;
+      case Consts.HYPERTROPHY_FOODS:
+        response = await apiService.getRequest(
+            'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize&hypertrophy=True');
+        break;
+      case Consts.SLIMMING_FOODS:
+        response = await apiService.getRequest(
+            'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize&slimming=True');
+        break;
+      default:
+        response = await apiService.getRequest(
+            'http://10.0.2.2:8000/api/v1/food/?page=$currentPage&search=$searchQuery&page_size=$pageSize');
+    }
 
     if (response.statusCode == 200) {
       String responseBody = utf8.decode(response.bodyBytes);

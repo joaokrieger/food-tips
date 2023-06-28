@@ -12,6 +12,8 @@ import 'package:food_tips/src/views/foodList.dart';
 import 'package:food_tips/src/views/recommendationCategory.dart';
 import 'package:food_tips/src/views/register.dart';
 
+import '../consts.dart';
+
 void main() {
   runApp(Home());
 }
@@ -282,7 +284,7 @@ class _HomeState extends State<Home> {
                     // Ação do botão Alimentos
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FoodList()),
+                      MaterialPageRoute(builder: (context) => const FoodList(filteringType:Consts.STANDARD_FOODS)),
                     );
                   },
                   child: Row(

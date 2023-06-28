@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_tips/src/views/home.dart';
 
+import '../consts.dart';
+import 'foodList.dart';
+
 void main() {
   runApp(RecommendationCategory());
 }
@@ -43,7 +46,11 @@ class RecommendationCategory extends StatelessWidget {
                         onPrimary: Color(0xFF504848), // Define a cor do texto
                       ),
                       onPressed: () {
-                        // Ação do botão Recomendações
+                        // Ação do botão Alimentos
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const FoodList(filteringType:Consts.SLIMMING_FOODS)),
+                        );
                       },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -54,7 +61,7 @@ class RecommendationCategory extends StatelessWidget {
                               height: 50,
                             ),
                             SizedBox(width: 20),
-                            Text(
+                            const Text(
                               'Emagrecimento',
                               style: TextStyle(fontSize: 20),
                             )
@@ -62,7 +69,7 @@ class RecommendationCategory extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   SizedBox(
                     height: 60.0,
                     width: 350.0,
@@ -72,7 +79,11 @@ class RecommendationCategory extends StatelessWidget {
                         onPrimary: Color(0xFF504848), // Define a cor do texto
                       ),
                       onPressed: () {
-                        // Ação do botão Recomendações
+                        // Ação do botão Alimentos
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const FoodList(filteringType:Consts.HYPERTROPHY_FOODS)),
+                        );
                       },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -82,8 +93,8 @@ class RecommendationCategory extends StatelessWidget {
                               width: 50,
                               height: 50,
                             ),
-                            SizedBox(width: 20),
-                            Text(
+                            const SizedBox(width: 20),
+                            const Text(
                               'Hipertrofia Muscular',
                               style: TextStyle(fontSize: 20),
                             )
