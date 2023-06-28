@@ -1,15 +1,150 @@
 import 'package:flutter/material.dart';
+import 'package:food_tips/src/models/userInfo.dart';
 import 'package:food_tips/src/views/home.dart';
+import 'dart:convert';
+import '../services/apiService.dart';
 
 void main() {
-  runApp(BiometricInfo());
+  runApp(BiometricInfoScreen());
 }
 
-class BiometricInfo extends StatelessWidget {
+class BiometricInfoScreen extends StatefulWidget {
+  BiometricInfoScreen();
+
+  @override
+  _BiometricInfoScreenState createState() => _BiometricInfoScreenState();
+}
+
+class _BiometricInfoScreenState extends State<BiometricInfoScreen> {
+
+  late UserInfo? userInfo;
+  late final int userId;
+  late final int userIdInfo;
+
+  final TextEditingController _heigthController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _muscleMassController = TextEditingController();
+  final TextEditingController _fatPercentageController = TextEditingController();
+  final TextEditingController _imcController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((userInfo) {
+
+      userIdInfo = userInfo.id;
+      _heigthController.text = userInfo.heigth.toString();
+      _weightController.text = userInfo.weight.toString();
+      _muscleMassController.text = userInfo.muscleMass.toString();
+      _fatPercentageController.text = userInfo.fatPercentage.toString();
+      _imcController.text = userInfo.imc.toString();
+      userId = userInfo.userId;
+
+    }).catchError((error){
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Erro ao carregar Usuário'),
+          content: Text('Detalhes do erro: $error'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    });
+
+  }
+
+
+  Future<UserInfo> fetchData() async {
+
+    final response = await ApiService().getRequest(
+      'http://10.0.2.2:8000/api/v1/userinfo/',
+    );
+
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      dynamic jsonData = jsonDecode(responseBody);
+
+      try {
+        int id = jsonData["id"];
+        double heigth = jsonData["heigth"];
+        double weight = jsonData["weight"];
+        double muscleMass = jsonData["muscle_mass"];
+        double fatPercentage = jsonData["fat_percentage"];
+        double imc = jsonData["imc"];
+        int userId = jsonData["user"];
+
+        UserInfo userInfo = UserInfo(
+            id: id,
+            heigth: heigth,
+            weight: weight,
+            muscleMass: muscleMass,
+            fatPercentage: fatPercentage,
+            imc: imc,
+            userId: userId);
+
+        return userInfo; // Retorna o objeto UserInfo
+      }
+      catch (e) {
+        throw Exception("Erro ao carregar Usuário: ${response.statusCode}");
+      }
+    }
+    else {
+      throw Exception("Erro na requisição: ${response.statusCode}");
+    }
+  }
+
+  Future<void> _userInfoRegister () async {
+
+    if (userIdInfo > 0) {
+
+      final url = 'http://10.0.2.2:8000/api/v1/userinfo/${userIdInfo}/';
+
+      final body = json.encode({
+        'userIdInfo': userIdInfo,
+        'heigth': _heigthController.text,
+        'weight': _weightController.text,
+        'muscle_mass': _muscleMassController.text,
+        'fat_percentage': _fatPercentageController.text,
+        'imc': _imcController.text,
+        'user': userId
+      });
+
+      final response = await ApiService().putRequest(url, body);
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      }
+      else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Não foi possível realizar a alteração do registro!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -42,6 +177,7 @@ class BiometricInfo extends StatelessWidget {
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: _weightController,
                               decoration: InputDecoration(
                                 labelText: 'Altura',
                                 labelStyle: TextStyle(
@@ -62,6 +198,7 @@ class BiometricInfo extends StatelessWidget {
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: _heigthController,
                               decoration: InputDecoration(
                                 labelText: 'Peso',
                                 labelStyle: TextStyle(
@@ -83,6 +220,7 @@ class BiometricInfo extends StatelessWidget {
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: _muscleMassController,
                               decoration: InputDecoration(
                                 labelText: 'Massa Muscular',
                                 labelStyle: TextStyle(
@@ -103,6 +241,7 @@ class BiometricInfo extends StatelessWidget {
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: _fatPercentageController,
                               decoration: InputDecoration(
                                 labelText: 'Percentual de Gordura',
                                 labelStyle: TextStyle(
@@ -116,60 +255,12 @@ class BiometricInfo extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.0),
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: DropdownButtonFormField<String>(
-                              items: [
-                                DropdownMenuItem<String>(
-                                  value: 'M',
-                                  child: Text(
-                                    'Masculino',
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                    ),
-                                  ),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'F',
-                                  child: Text(
-                                    'Feminino',
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              decoration: InputDecoration(
-                                labelText: 'Sexo',
-                                labelStyle: TextStyle(
-                                  color: Colors.black45,
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              onChanged: (value) {
-                                // Lógica para lidar com a seleção do valor
-                              },
-                            ),
-                          ),
-                        ],
-                      )
-                    ),
                     SizedBox(height: 32.0),
                     SizedBox(
                       height: 50.0,
                       width: 300.0,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Implementar a lógica de login aqui
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Home()),
-                          );
-                        },
+                        onPressed: _userInfoRegister,
                         child: Text(
                           'Salvar',
                           style: TextStyle(

@@ -9,11 +9,20 @@ import 'package:food_tips/src/views/register.dart';
 void main() {
   runApp(Home());
 }
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
 
-class Home extends StatelessWidget {
+class _HomeState extends State<Home> {
   final double height = 70;
   final double weight = 179;
   final int age = 10;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +164,7 @@ class Home extends StatelessWidget {
                   // Navegação para a próxima tela quando o container for clicado
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => BiometricInfo()),
+                    MaterialPageRoute(builder: (context) => BiometricInfoScreen()),
                   );
                 },
               ),
