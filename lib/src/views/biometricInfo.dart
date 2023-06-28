@@ -60,8 +60,8 @@ class _BiometricInfoScreenState extends State<BiometricInfoScreen> {
         _muscleMassController.text = userInfo.muscleMass.toString();
         _fatPercentageController.text = userInfo.fatPercentage.toString();
         _imcController.text = userInfo.imc.toString();
-        userId = userInfo.userId;
-        
+        userId = userInfo.userId!;
+
       }
       catch (e) {
         throw Exception("Erro ao carregar Usuário");
