@@ -27,7 +27,9 @@ class _HomeState extends State<Home> {
 
   late String _firstName = '';
   late String _lastName = '';
-  late String _status = '';
+  late String _statusImc = '';
+  late String _statusFatPercentage = '';
+  late String _statusMuscleMass = '';
   late int _age = 0;
   late double? _imcPercent = 0;
 
@@ -69,46 +71,181 @@ class _HomeState extends State<Home> {
           UserInfo userInfo = UserInfo(
             id: jsonData["id"],
             imc: jsonData["imc"],
+            muscleMass: jsonData["muscle_mass"],
+            fatPercentage: jsonData["fat_percentage"]
           );
 
-          //Verificando Status
+          //Calculando Idade
           int age = Utils.calculateAge(user.birthDate);
           double idealImc = 0;
 
-          //Menores de 19 anos
-          if (age < 19) {
+          //Verificando IMC
+          if (age < 19) { //Menores de 19 anos
             idealImc = 84.9;
 
             if (userInfo.imc! < 5)
-              _status = "Baixo Peso";
+              _statusImc = "Baixo Peso";
             else if (userInfo.imc! > 5 && userInfo.imc! < 84.9)
-              _status = "Eutrofia";
+              _statusImc = "Eutrofia";
             else
-              _status = "Sobrepeso";
+              _statusImc = "Sobrepeso";
           }
           else if (age > 19 && age < 60) { //Entre 19 e 60 anos
 
             idealImc = 25;
 
             if (userInfo.imc! < 18.5)
-              _status = "Baixo Peso";
+              _statusImc = "Baixo Peso";
             else if (userInfo.imc! > 18.5 && userInfo.imc! < 25)
-              _status = "Eutrofia";
+              _statusImc = "Eutrofia";
             else if (userInfo.imc! > 25 && userInfo.imc! < 30)
-              _status = "Sobrepeso";
+              _statusImc = "Sobrepeso";
             else
-              _status = "Obesidade";
+              _statusImc = "Obesidade";
           }
           else if (age > 60) { //Maiores de 60 anos
 
             idealImc = 27;
 
             if (userInfo.imc! < 22)
-              _status = "Baixo Peso";
+              _statusImc = "Baixo Peso";
             else if (userInfo.imc! > 22 && userInfo.imc! < 27)
-              _status = "Eutrofia";
+              _statusImc = "Eutrofia";
             else
-              _status = "Sobrepeso";
+              _statusImc = "Sobrepeso";
+          }
+
+          //Verificando Percentual de Gordura
+          if(age < 29){
+            if(userInfo.fatPercentage! < 11){
+              _statusFatPercentage = "Atleta";
+            } else if(userInfo.fatPercentage! < 13){
+              _statusFatPercentage = "Bom";
+            } else if(userInfo.fatPercentage! < 20){
+              _statusFatPercentage = "Normal";
+            } else if(userInfo.fatPercentage! < 23){
+              _statusFatPercentage = "Elevado";
+            } else{
+              _statusFatPercentage = "Muito Elevado";
+            }
+          }
+          else if(age < 39){
+            if(userInfo.fatPercentage! < 12){
+              _statusFatPercentage = "Atleta";
+            } else if(userInfo.fatPercentage! < 14){
+              _statusFatPercentage = "Bom";
+            } else if(userInfo.fatPercentage! < 21){
+              _statusFatPercentage = "Normal";
+            } else if(userInfo.fatPercentage! < 24){
+              _statusFatPercentage = "Elevado";
+            } else{
+              _statusFatPercentage = "Muito Elevado";
+            }
+          }
+          else if(age < 49){
+            if(userInfo.fatPercentage! < 14){
+              _statusFatPercentage = "Atleta";
+            } else if(userInfo.fatPercentage! < 16){
+              _statusFatPercentage = "Bom";
+            } else if(userInfo.fatPercentage! < 23){
+              _statusFatPercentage = "Normal";
+            } else if(userInfo.fatPercentage! < 26){
+              _statusFatPercentage = "Elevado";
+            } else{
+              _statusFatPercentage = "Muito Elevado";
+            }
+          }
+          else{
+            if(userInfo.fatPercentage! < 15){
+              _statusFatPercentage = "Atleta";
+            } else if(userInfo.fatPercentage! < 17){
+              _statusFatPercentage = "Bom";
+            } else if(userInfo.fatPercentage! < 24){
+              _statusFatPercentage = "Normal";
+            } else if(userInfo.fatPercentage! < 27){
+              _statusFatPercentage = "Elevado";
+            } else{
+              _statusFatPercentage = "Muito Elevado";
+            }
+          }
+
+          //Verificando Massa Muscular
+          if(age < 24){
+            if(userInfo.muscleMass! < 54){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 62){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }else if(age < 34){
+            if(userInfo.muscleMass! < 56){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 63){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }else if(age < 44){
+            if(userInfo.muscleMass! < 58){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 64){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }else if(age < 54){
+            if(userInfo.muscleMass! < 55){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 61){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }
+          else if(age < 54){
+            if(userInfo.muscleMass! < 55){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 61){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          } else if(age < 64){
+            if(userInfo.muscleMass! < 54){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 61){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }
+          else if(age < 74){
+            if(userInfo.muscleMass! < 53){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 61){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }
+          else if(age < 84){
+            if(userInfo.muscleMass! < 50){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 58){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
+          }
+          else{
+            if(userInfo.muscleMass! < 48){
+              _statusMuscleMass = "Baixa";
+            }else if(userInfo.muscleMass! > 53){
+              _statusMuscleMass = "Alta";
+            } else{
+              _statusMuscleMass = "Ideal";
+            }
           }
 
 
@@ -147,7 +284,7 @@ class _HomeState extends State<Home> {
               GestureDetector(
                 child: Container(
                   width: 350,
-                  height: 250,
+                  height: 270,
                   decoration: BoxDecoration(
                     color: Color(0xFFF0F0F0),
                     borderRadius: BorderRadius.circular(10), // Define o raio das bordas
@@ -254,7 +391,7 @@ class _HomeState extends State<Home> {
                             ),
                             SizedBox(width: 5.0),
                             Text(
-                              _status,
+                              _statusImc,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Color(0xFF504848),
@@ -264,27 +401,49 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(height: 10.0),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Visibility(
-                              visible: _imc! == 0,
-                              child: Container(
-                                padding: EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF008445),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child:  Text(
-                                    'Informe seus dados!',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                            SizedBox(width: 16.0),
+                            Text(
+                              'Status Muscular:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF504848),
+                              ),
+                            ),
+                            SizedBox(width: 5.0),
+                            Text(
+                              _statusMuscleMass,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF504848),
+                              ),
                             ),
                           ],
-                        )
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            SizedBox(width: 16.0),
+                            Text(
+                              'Class. Gordura:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF504848),
+                              ),
+                            ),
+                            SizedBox(width: 5.0),
+                            Text(
+                              _statusFatPercentage,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF504848),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.0),
                       ]
                     )
                   ),
@@ -398,7 +557,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(height: 16.0),
-
               SizedBox(
                 height: 60.0,
                 width: 350.0,

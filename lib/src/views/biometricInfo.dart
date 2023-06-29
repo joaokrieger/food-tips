@@ -208,7 +208,7 @@ class _BiometricInfoScreenState extends State<BiometricInfoScreen> {
                                 ),
                                 filled: true,
                                 fillColor: Colors.white,
-                                suffixText: 'g', // Texto exibido à direita do TextField
+                                suffixText: 'Kg', // Texto exibido à direita do TextField
                                 suffixStyle: TextStyle(
                                   color: Colors.black45, // Defina a cor desejada aqui
                                 ),
