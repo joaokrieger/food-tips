@@ -31,6 +31,8 @@ class _HomeState extends State<Home> {
   late int _age = 0;
   late double? _imcPercent = 0;
 
+  late double? _imc = 0;
+
   @override
   void initState() {
     super.initState();
@@ -74,47 +76,52 @@ class _HomeState extends State<Home> {
           double idealImc = 0;
 
           //Menores de 19 anos
-          if(age < 19){
-
+          if (age < 19) {
             idealImc = 84.9;
 
-            if(userInfo.imc! < 5)
+            if (userInfo.imc! < 5)
               _status = "Baixo Peso";
-            else if(userInfo.imc! > 5 && userInfo.imc! < 84.9)
+            else if (userInfo.imc! > 5 && userInfo.imc! < 84.9)
               _status = "Eutrofia";
             else
               _status = "Sobrepeso";
           }
-          else if(age > 19 && age < 60){ //Entre 19 e 60 anos
+          else if (age > 19 && age < 60) { //Entre 19 e 60 anos
 
             idealImc = 25;
 
-            if(userInfo.imc! < 18.5)
+            if (userInfo.imc! < 18.5)
               _status = "Baixo Peso";
-            else if(userInfo.imc! > 18.5 && userInfo.imc! < 25)
+            else if (userInfo.imc! > 18.5 && userInfo.imc! < 25)
               _status = "Eutrofia";
-            else if(userInfo.imc! > 25 && userInfo.imc! < 30)
+            else if (userInfo.imc! > 25 && userInfo.imc! < 30)
               _status = "Sobrepeso";
             else
               _status = "Obesidade";
           }
-          else if(age > 60){ //Maiores de 60 anos
+          else if (age > 60) { //Maiores de 60 anos
 
             idealImc = 27;
 
-            if(userInfo.imc! < 22)
+            if (userInfo.imc! < 22)
               _status = "Baixo Peso";
-            else if(userInfo.imc! > 22 && userInfo.imc! < 27)
+            else if (userInfo.imc! > 22 && userInfo.imc! < 27)
               _status = "Eutrofia";
             else
               _status = "Sobrepeso";
           }
 
+
           setState(() {
-            _imcPercent = (userInfo.imc! / idealImc); //Calculando porcentagem equivalente ao ideal
             _age = age;
             _firstName = user.firstName;
             _lastName = user.lastName;
+            _imc = userInfo.imc;
+
+            if(userInfo.imc! > 0 && idealImc > 0) {
+              _imcPercent = (userInfo.imc! /
+                  idealImc); //Calculando porcentagem equivalente ao ideal
+            }
           });
         }
       }
@@ -140,7 +147,7 @@ class _HomeState extends State<Home> {
               GestureDetector(
                 child: Container(
                   width: 350,
-                  height: 225,
+                  height: 250,
                   decoration: BoxDecoration(
                     color: Color(0xFFF0F0F0),
                     borderRadius: BorderRadius.circular(10), // Define o raio das bordas
@@ -255,6 +262,29 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: _imc! == 0,
+                              child: Container(
+                                padding: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF008445),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child:  Text(
+                                    'Informe seus dados!',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                            ),
+                          ],
+                        )
                       ]
                     )
                   ),
@@ -386,12 +416,13 @@ class _HomeState extends State<Home> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children:[
+                        SizedBox(width: 8),
                         Image.asset(
                           'assets/img/icons/icn_star.png',
-                          width: 50,
-                          height: 50,
+                          width: 35,
+                          height: 35,
                         ),
-                        SizedBox(width: 20),
+                        SizedBox(width: 70),
                         const Text(
                           'Favoritos',
                           style: TextStyle(fontSize: 20),
@@ -400,8 +431,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-
-
               SizedBox(height: 16.0),
               SizedBox(
                 height: 60.0,
